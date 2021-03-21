@@ -1,0 +1,27 @@
+{
+  "name": "twitch-chatbot",
+  "version": "0.5.3",
+  "description": "A simple app chatbot.",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "delay": "^4.4.0",
+    "express": "^4.17.1",
+    "mathjs": "^8.1.1",
+    "tmi.js": "^1.7.1"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": "https://github.com/gclaunch/married2gaming--betbot.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "twitch",
+    "chatbots",
+    "irc"
+  ]
+}
