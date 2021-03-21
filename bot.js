@@ -124,7 +124,7 @@ function onMessageHandler (channel, user, message, self) {
 
     // Listen for balance and store balance
     if (message.includes(`@${BOT_USERNAME} - You've`)) {
-      var balanceInt = parseInt(message.split(' ')[3].replace(/,/g,''));
+      var balanceInt = parseInt(message.split(' ')[3].replace(/./g,''));
       fs.writeFile(balanceFile, balanceInt.toString(), function (err) {
         if (err) return console.log(err);
       });
