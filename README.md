@@ -1,11 +1,11 @@
 # saltyteemo--auto-betbot
-Automated Betbot for Twitch.tv/SaltyTeemo
+Automated Betting bot for Twitch.tv/SaltyTeemo
 
 =================
 
 ## Bot Overview
 
-Twitch.tv/SaltyTeemo spectates League of Legends streams and lets viewers bet on the outcome with fake channel currency.
+Twitch.tv/SaltyTeemo spectates League of Legends streams and lets viewers bet on the outcome with fake channel currency. This bot will automatically bet using that currency.
 
 Twitch offers an Internet Relay Chat (IRC) interface for chat functionality. Chatbots allow you to programmatically interact with a Twitch chat feed using IRC standards; the bot connects to the Twitch IRC network as a client to perform these actions.This guide presents an easy bot example to get you started.
 
@@ -15,8 +15,8 @@ Twitch offers an Internet Relay Chat (IRC) interface for chat functionality. Cha
 
 To start, you’ll need these:
  
-`BOT_USERNAME` — The account (username) that the chatbot uses to send chat messages. This can be your Twitch account. Alternately, many developers choose to create a second Twitch account for their bot, so it's clear from whom the messages originate.
-`OAUTH_TOKEN` — The token to authenticate your chatbot with Twitch's servers. Generate this with [https://twitchapps.com/tmi/](https://twitchapps.com/tmi/) (a Twitch community-driven wrapper around the Twitch API), while logged in to your chatbot account. The token will be an alphanumeric string.
+* `BOT_USERNAME` — The account (username) that the chatbot uses to send chat messages. This can be your Twitch account. Alternately, many developers choose to create a second Twitch account for their bot, so it's clear from whom the messages originate.
+* `OAUTH_TOKEN` — The token to authenticate your chatbot with Twitch's servers. Generate this with [https://twitchapps.com/tmi/](https://twitchapps.com/tmi/) (a Twitch community-driven wrapper around the Twitch API), while logged in to your chatbot account. The token will be an alphanumeric string.
 
 
 ## Notes
