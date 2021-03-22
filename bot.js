@@ -41,7 +41,21 @@ var timestampFile = `./timestamp/${BOT_USERNAME}.txt`;
 
 // Called every time a message comes in
 function onMessageHandler (channel, user, message, self) {
-  if (self) { return; } // Ignore messages from myself
+  
+  // Listen for my own bet and reset variables after delay
+  if (user.username === BOT_USERNAME.toLowerCase()) { 
+    if (message.includes('!red') || message.includes('!blue')) {
+      (async () => {
+        betstarted = 2;
+
+        await delay(120000);
+
+        red = 0;
+        blue = 0;
+        betstarted = 0;
+      })();
+    }
+  }
   
   // Listen for bets starting and then bet after delay
   if (message.includes('!red') || message.includes('!blue')) {
