@@ -94,17 +94,52 @@ function onMessageHandler (channel, user, message, self) {
     }
   }
 
-  // Listen for Red bets
-  if (message.includes('!red') || message.includes('saltyt1Red')) {
+  
+  // Listen for bets
+  //TODO: make sure it doesn't subtract twice if bettor does both colors before someone else
+  if (message.includes('!red') || message.includes('saltyt1Red')) { // red bettors
     var betsRed = parseInt(message.split(' ')[1]);
-    red = red + betsRed;
+    if (betsRed > 1) {
+      red = red + betsRed;
+      tempRed = betsRed;
+      tempRedBettor = user.username;
+      console.log(`Red: ${red}`);
+      console.log(tempRedBettor);
+    }
   }
+    if (user.username === userListener) {
+      if (message.includes('You already have a bet') || message.includes('You do not have enough') ) { // Subtract invalid bets
+        redBettor = message.split(' ')[0].replace(/@/g,'');
+        console.log(`Red bettor: ${redBettor}`);
+        if (tempRedBettor.toLowerCase() === redBettor.toLowerCase()) {
+          red = red - tempRed;
+          console.log(`Red adjut: ${red}`);
+        }
+      }
+    } // END red bettors
 
-  // Listen for Blue bets
-  if (message.includes('!blue') || message.includes('saltyt1Blue')) {
+  if (message.includes('!blue') || message.includes('saltyt1Blue')) { // blue bettors
     var betsBlue = parseInt(message.split(' ')[1]);
-    blue = blue + betsBlue;
+    if (betsBlue > 1) {
+      blue = blue + betsBlue;
+      tempBlue = betsBlue;
+      tempBlueBettor = user.username;
+      console.log(`Blue: ${blue}`);
+      console.log(tempBlueBettor);
+    }
   }
+    if (user.username === userListener) {
+      if (message.includes('You already have a bet') || message.includes('You do not have enough') ) { // Subtract invalid bets
+        blueBettor = message.split(' ')[0].replace(/@/g,'');
+        console.log(`Blue bettor: ${blueBettor}`);
+        if (tempBlueBettor.toLowerCase() === blueBettor.toLowerCase()) {
+          blue = blue - tempBlue;
+          console.log(`Blue adjut: ${blue}`);
+        }
+      }
+    } // END blue bettors
+  // END Listen for bets
+
 
   if (user.username === userListener) { // Only listen to messages from this user
 
