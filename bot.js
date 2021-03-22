@@ -53,7 +53,7 @@ var timestampFile = `./timestamp/${BOT_USERNAME}.txt`;
 function onMessageHandler (channel, user, message, self) {
   
   // Listen for my own bet and reset variables after delay
-  if (user.username === BOT_USERNAME.toLowerCase()) { 
+  if (user.username.toLowerCase() === BOT_USERNAME.toLowerCase()) { 
     if (message.includes('!red') || message.includes('saltyt1Red') || message.includes('!blue') || message.includes('saltyt1Red')) {
       (async () => {
         betstarted = 2;
@@ -93,12 +93,6 @@ function onMessageHandler (channel, user, message, self) {
           client.say(channel, `!${betColor} ${betAmount}`);
           betstarted = 2;
         }
-
-        await delay(230000); // reset variables after delay
-
-        red = 0;
-        blue = 0;
-        betstarted = 0;
         
       })();
     }
