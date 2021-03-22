@@ -48,7 +48,7 @@ function onMessageHandler (channel, user, message, self) {
       (async () => {
         betstarted = 2;
 
-        await delay(120000);
+        await delay(230000);
 
         red = 0;
         blue = 0;
