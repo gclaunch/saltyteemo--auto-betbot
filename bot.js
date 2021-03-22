@@ -94,7 +94,7 @@ function onMessageHandler (channel, user, message, self) {
     }
   }
 
-  
+
   // Listen for bets
   //TODO: make sure it doesn't subtract twice if bettor does both colors before someone else
   if (message.includes('!red') || message.includes('saltyt1Red')) { // red bettors
@@ -103,17 +103,13 @@ function onMessageHandler (channel, user, message, self) {
       red = red + betsRed;
       tempRed = betsRed;
       tempRedBettor = user.username;
-      console.log(`Red: ${red}`);
-      console.log(tempRedBettor);
     }
   }
     if (user.username === userListener) {
       if (message.includes('You already have a bet') || message.includes('You do not have enough') ) { // Subtract invalid bets
         redBettor = message.split(' ')[0].replace(/@/g,'');
-        console.log(`Red bettor: ${redBettor}`);
         if (tempRedBettor.toLowerCase() === redBettor.toLowerCase()) {
           red = red - tempRed;
-          console.log(`Red adjut: ${red}`);
         }
       }
     } // END red bettors
@@ -124,17 +120,13 @@ function onMessageHandler (channel, user, message, self) {
       blue = blue + betsBlue;
       tempBlue = betsBlue;
       tempBlueBettor = user.username;
-      console.log(`Blue: ${blue}`);
-      console.log(tempBlueBettor);
     }
   }
     if (user.username === userListener) {
       if (message.includes('You already have a bet') || message.includes('You do not have enough') ) { // Subtract invalid bets
         blueBettor = message.split(' ')[0].replace(/@/g,'');
-        console.log(`Blue bettor: ${blueBettor}`);
         if (tempBlueBettor.toLowerCase() === blueBettor.toLowerCase()) {
           blue = blue - tempBlue;
-          console.log(`Blue adjut: ${blue}`);
         }
       }
     } // END blue bettors
