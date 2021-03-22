@@ -44,7 +44,7 @@ function onMessageHandler (channel, user, message, self) {
   
   // Listen for my own bet and reset variables after delay
   if (user.username === BOT_USERNAME.toLowerCase()) { 
-    if (message.includes('!red') || message.includes('!blue')) {
+    if (message.includes('!red') || message.includes('saltyt1Red') || message.includes('!blue') || message.includes('saltyt1Red')) {
       (async () => {
         betstarted = 2;
 
@@ -58,7 +58,7 @@ function onMessageHandler (channel, user, message, self) {
   }
   
   // Listen for bets starting and then bet after delay
-  if (message.includes('!red') || message.includes('!blue')) {
+  if (message.includes('!red') || message.includes('saltyt1Red') || message.includes('!blue') || message.includes('saltyt1Red')) {
     if (betstarted === 0) {
       betstarted = 1;
 
@@ -95,13 +95,13 @@ function onMessageHandler (channel, user, message, self) {
   }
 
   // Listen for Red bets
-  if (message.includes('!red')) {
+  if (message.includes('!red') || message.includes('saltyt1Red')) {
     var betsRed = parseInt(message.split(' ')[1]);
     red = red + betsRed;
   }
 
   // Listen for Blue bets
-  if (message.includes('!blue')) {
+  if (message.includes('!blue') || message.includes('saltyt1Blue')) {
     var betsBlue = parseInt(message.split(' ')[1]);
     blue = blue + betsBlue;
   }
