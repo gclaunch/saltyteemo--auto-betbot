@@ -110,20 +110,24 @@ function onMessageHandler (channel, user, message, self) {
 
     // Reset at end of betting round
     if (message.includes('Betting has ended')) {
-      red = 0;
-      blue = 0;
-      betstarted = 2;
-      await delay(160000);
-      betstarted = 0;
+      (async () => {
+        red = 0;
+        blue = 0;
+        betstarted = 2;
+        await delay(160000);
+        betstarted = 0;
+      })();
     }
 
     // Reset if bets haven't started (in case of game crashes or early surrenders)
     if (message.includes('Betting has not opened')) {
-      red = 0;
-      blue = 0;
-      betstarted = 2;
-      await delay(160000);
-      betstarted = 0;
+      (async () => {
+        red = 0;
+        blue = 0;
+        betstarted = 2;
+        await delay(160000);
+        betstarted = 0;
+      })();
     }
 
     // Listen for my own bet, store balance, and reset variables after delay
