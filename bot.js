@@ -112,6 +112,8 @@ function onMessageHandler (channel, user, message, self) {
     if (message.includes('Betting has ended')) {
       red = 0;
       blue = 0;
+      betstarted = 2;
+      await delay(160000);
       betstarted = 0;
     }
 
@@ -119,6 +121,8 @@ function onMessageHandler (channel, user, message, self) {
     if (message.includes('Betting has not opened')) {
       red = 0;
       blue = 0;
+      betstarted = 2;
+      await delay(160000);
       betstarted = 0;
     }
 
