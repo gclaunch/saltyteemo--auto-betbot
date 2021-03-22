@@ -30,9 +30,19 @@ client.on('connected', onConnectedHandler);
 // Connect to Twitch:
 client.connect();
 
-// Variables
+// Variables Red
 var red = 0;
+var tempRed = 0;
+var redBettor = '';
+var tempRedBettor = '';
+
+// Variables Blue
 var blue = 0;
+var tempBlue = 0;
+var blueBettor = '';
+var tempBlueBettor = '';
+
+// Variables - Other
 var betstarted = 0;
 var userListener = `xxsaltbotxx`;
 var balanceFile = `./balance/${BOT_USERNAME}.txt`;
