@@ -30,22 +30,19 @@ client.on('connected', onConnectedHandler);
 // Connect to Twitch:
 client.connect();
 
-// Variables Red
+// Variables - Red
 var red = 0;
 var tempRed = 0;
-var redBettor = '';
-var tempRedBettor = '';
+var tempRedBettor;
 
-// Variables Blue
+// Variables - Blue
 var blue = 0;
 var tempBlue = 0;
-var blueBettor = '';
-var tempBlueBettor = '';
+var tempBlueBettor;
 
 // Variables - Other
 var betstarted = 0;
 var userListener = `xxsaltbotxx`;
-var balanceFile = `./balance/${BOT_USERNAME}.txt`;
 var timestampFile = `./timestamp/${BOT_USERNAME}.txt`;
 
 
@@ -100,44 +97,39 @@ function onMessageHandler (channel, user, message, self) {
 
 
   // Listen for bets
-  //TODO: make sure it doesn't subtract twice if bettor does both colors before someone else
   if (message.includes('!red') || message.includes('saltyt1Red')) { // red bettors
     var betsRed = parseInt(message.split(' ')[1]);
     if (betsRed > 1) {
       red = red + betsRed;
       tempRed = betsRed;
-      tempRedBettor = user.username;
+      tempRedBettor = user.username.toLowerCase();
     }
   }
-    if (user.username === userListener) {
-      if (message.includes('You already have a bet') || message.includes('You do not have enough') ) { // Subtract invalid bets
-        redBettor = message.split(' ')[0].replace(/@/g,'');
-        if (tempRedBettor.toLowerCase() === redBettor.toLowerCase()) {
-          red = red - tempRed;
-        }
-      }
-    } // END red bettors
 
   if (message.includes('!blue') || message.includes('saltyt1Blue')) { // blue bettors
     var betsBlue = parseInt(message.split(' ')[1]);
     if (betsBlue > 1) {
       blue = blue + betsBlue;
       tempBlue = betsBlue;
-      tempBlueBettor = user.username;
+      tempBlueBettor = user.username.toLowerCase();
     }
   }
-    if (user.username === userListener) {
-      if (message.includes('You already have a bet') || message.includes('You do not have enough') ) { // Subtract invalid bets
-        blueBettor = message.split(' ')[0].replace(/@/g,'');
-        if (tempBlueBettor.toLowerCase() === blueBettor.toLowerCase()) {
-          blue = blue - tempBlue;
-        }
-      }
-    } // END blue bettors
   // END Listen for bets
 
 
   if (user.username === userListener) { // Only listen to messages from this user
+
+    // Subtract invalid bets
+    //TODO: make sure it doesn't subtract twice if bettor does both colors before someone else
+    if (message.includes('You already have a bet') || message.includes('You do not have enough') ) {
+      var bettor = message.split(' ')[0].replace(/@/g,'').toLowerCase(); // Get @username
+      if (bettor === tempRedBettor) { // Compare @username with earlier tempbettor username
+        red = red - tempRed; //subtract
+      }
+      if (bettor === tempBlueBettor) {
+        blue = blue - tempBlue;
+      }
+    }
 
     // Reset at end of betting round
     if (message.includes('Betting has ended')) {
@@ -159,31 +151,6 @@ function onMessageHandler (channel, user, message, self) {
         await delay(30000);
         betstarted = 0;
       })();
-    }
-
-    // Listen for my own bet, store balance, and reset variables after delay
-    if (message.includes(`@${BOT_USERNAME} - RED bet submitted for`) || message.includes(`@${BOT_USERNAME} - BLUE bet submitted for`)) {
-      var balanceInt = parseInt(message.split(' ')[11]);
-      fs.writeFile(balanceFile, balanceInt.toString(), function (err) {
-        if (err) return console.log(err);
-      });
-      (async () => {
-        betstarted = 2;
-
-        await delay(230000);
-
-        red = 0;
-        blue = 0;
-        betstarted = 0;
-      })();
-    }
-
-    // Listen for balance and store balance
-    if (message.includes(`@${BOT_USERNAME} - You have`)) {
-      var balanceInt = message.replace(BOT_USERNAME,'').replace(/\D/g,'');
-      fs.writeFile(balanceFile, balanceInt.toString(), function (err) {
-        if (err) return console.log(err);
-      });
     }
     
   } // END UserListener
