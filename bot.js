@@ -145,7 +145,7 @@ function onMessageHandler (channel, user, message, self) {
         red = 0;
         blue = 0;
         betstarted = 2;
-        await delay(160000);
+        await delay(30000);
         betstarted = 0;
       })();
     }
@@ -156,7 +156,7 @@ function onMessageHandler (channel, user, message, self) {
         red = 0;
         blue = 0;
         betstarted = 2;
-        await delay(160000);
+        await delay(30000);
         betstarted = 0;
       })();
     }
