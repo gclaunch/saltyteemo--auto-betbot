@@ -53,9 +53,7 @@ function onMessageHandler (channel, user, message, self) {
   // Listen for my own bet and reset variables after delay
   if (user.username.toLowerCase() === BOT_USERNAME.toLowerCase()) { 
     if (message.startsWith('!red') || message.startsWith('saltyt1Red') || message.startsWith('!blue') || message.startsWith('saltyt1Red')) {
-      (async () => {
-        alreadyBet = true;
-      })();
+      alreadyBet = true;
     }
   }
   
