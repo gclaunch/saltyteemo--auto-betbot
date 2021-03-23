@@ -41,7 +41,8 @@ var tempBlue = 0;
 var tempBlueBettor;
 
 // Variables - Other
-var betstarted = 0;
+var betOpened = false;
+var alreadyBet = false;
 var userListener = `xxsaltbotxx`;
 var timestampFile = `./timestamp/${BOT_USERNAME}.txt`;
 
@@ -51,53 +52,56 @@ function onMessageHandler (channel, user, message, self) {
   
   // Listen for my own bet and reset variables after delay
   if (user.username.toLowerCase() === BOT_USERNAME.toLowerCase()) { 
-    if (message.includes('!red') || message.includes('saltyt1Red') || message.includes('!blue') || message.includes('saltyt1Red')) {
+    if (message.startsWith('!red') || message.startsWith('saltyt1Red') || message.startsWith('!blue') || message.startsWith('saltyt1Red')) {
       (async () => {
-        betstarted = 2;
-
-        await delay(230000);
-
-        red = 0;
-        blue = 0;
-        betstarted = 0;
+        alreadyBet = true;
       })();
     }
   }
   
   // Listen for bets starting and then bet after delay
-  if (message.includes('!red') || message.includes('saltyt1Red') || message.includes('!blue') || message.includes('saltyt1Red')) {
-    if (betstarted === 0) {
-      betstarted = 1;
+  if (message.startsWith('!red') || message.startsWith('saltyt1Red') || message.startsWith('!blue') || message.startsWith('saltyt1Red')) {
+    if (betOpened === false) {
+      var betCheck = parseInt(message.split(' ')[1]); // check if a bet vs an emote
+      if (betCheck > 1) {
+        betOpened = true;
 
-      (async () => {
-        await delay.range(154000, 156000); // Bet random times for more natural looking bets
-          
-        var betInt = math.round(math.random(500, 1500)); // Bet random amount since we're no longer balance tracking
+        (async () => {
+          await delay.range(154000, 156000); // Bet random timing for more natural looking bets
+            
+          var betInt = math.round(math.random(5, 15)); // choose random number for bet
 
-        if (betInt > 1) {
-          var betAmount = betInt;
-        } else {
-          var betAmount = 250;
-        }
+          if (betInt > 1) {
+            var betAmount = betInt * 100; // Multiply * 100 for more natural looking bet
+          } else {
+            var betAmount = 250; // Fallback bet
+          }
 
-        if (red > blue) {
-          var betColor = 'blue';
-        } else {
-          var betColor = 'red';
-        }
+          if (red > blue) {
+            var betColor = 'blue';
+          } else {
+            var betColor = 'red';
+          }
 
-        if (betstarted === 1) {
-          client.say(channel, `!${betColor} ${betAmount}`);
-          betstarted = 2;
-        }
-        
-      })();
+          if (betOpened === true && alreadyBet === false) {
+            client.say(channel, `!${betColor} ${betAmount}`);
+          }          
+        })();
+
+        (async () => {
+          await delay(180000);
+          red = 0;
+          blue = 0;
+          alreadyBet = false;
+          betOpened = false;
+        })();
+      }
     }
   }
 
 
   // Listen for bets
-  if (message.includes('!red') || message.includes('saltyt1Red')) { // red bettors
+  if (message.startsWith('!red') || message.startsWith('saltyt1Red')) { // red bettors
     var betsRed = parseInt(message.split(' ')[1]);
     if (betsRed > 1) {
       red = red + betsRed;
@@ -106,7 +110,7 @@ function onMessageHandler (channel, user, message, self) {
     }
   }
 
-  if (message.includes('!blue') || message.includes('saltyt1Blue')) { // blue bettors
+  if (message.startsWith('!blue') || message.startsWith('saltyt1Blue')) { // blue bettors
     var betsBlue = parseInt(message.split(' ')[1]);
     if (betsBlue > 1) {
       blue = blue + betsBlue;
@@ -131,26 +135,12 @@ function onMessageHandler (channel, user, message, self) {
       }
     }
 
-    // Reset at end of betting round
-    if (message.includes('Betting has ended')) {
-      (async () => {
-        red = 0;
-        blue = 0;
-        betstarted = 2;
-        await delay(30000);
-        betstarted = 0;
-      })();
-    }
-
-    // Reset if bets haven't started (in case of game crashes or early surrenders)
-    if (message.includes('Betting has not opened')) {
-      (async () => {
-        red = 0;
-        blue = 0;
-        betstarted = 2;
-        await delay(30000);
-        betstarted = 0;
-      })();
+    // Reset at end of betting round -or- if bets haven't started (in case of game crashes or early surrenders)
+    if (message.includes('Betting has ended') || message.includes('Betting has not opened')) {
+      red = 0;
+      blue = 0;
+      betOpened = false;
+      alreadyBet = false;
     }
     
   } // END UserListener
