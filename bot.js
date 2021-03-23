@@ -86,7 +86,7 @@ function onMessageHandler (channel, user, message, self) {
           }          
         })();
 
-        (async () => {
+        (async () => { // reset and close bets
           await delay(180000);
           red = 0;
           blue = 0;
