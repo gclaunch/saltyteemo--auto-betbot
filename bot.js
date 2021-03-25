@@ -2,6 +2,7 @@ const delay = require('delay');
 const tmi = require('tmi.js');
 const fs = require('fs');
 const math = require('mathjs');
+const reset = require("../lib/resetHandler.js");
 const { onBetopenedHandler } = require("../lib/onBetopenedHandler");
 
 // Define configuration options
@@ -47,7 +48,7 @@ function onMessageHandler (channel, user, message, self) {
       (async () => {
         alreadyBet = true;
         await delay(180000);
-        alreadyBet = false;
+        reset.resetHandler();
       })();
     }
   }
