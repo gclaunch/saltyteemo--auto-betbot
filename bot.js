@@ -2,6 +2,7 @@ const delay = require('delay');
 const tmi = require('tmi.js');
 const fs = require('fs');
 const math = require('mathjs');
+const { onBetopenedHandler } = require("../lib/onBetopenedHandler");
 
 // Define configuration options
 var BOT_USERNAME = '';
@@ -22,128 +23,61 @@ const opts = {
 // Create a client with our options
 const client = new tmi.client(opts);
 
-// Register our event handlers (defined below)
-client.on('message', onMessageHandler);
-client.on('message', onFarmingHandler);
-client.on('connected', onConnectedHandler);
+// Register our event handlers
+client.on('message', onMessageHandler); // Read chat messages
+client.on('message', onBetopenedHandler); // Bet calculations
+client.on('message', onFarmingHandler); // Farming
+client.on('connected', onConnectedHandler); // Initial connection
 
 
 // Connect to Twitch:
 client.connect();
 
-// Variables - Red
-var red = 0;
-var tempRed = 0;
-var tempRedBettor;
-
-// Variables - Blue
-var blue = 0;
-var tempBlue = 0;
-var tempBlueBettor;
-
-// Variables - Other
-var betOpened = false;
+// Variables
 var alreadyBet = false;
-var userListener = `xxsaltbotxx`;
 var timestampFile = `./timestamp/${BOT_USERNAME}.txt`;
 
 
 // Called every time a message comes in
 function onMessageHandler (channel, user, message, self) {
   
-  // Listen for my own bet and reset variables after delay
+  // Listen for my own bet
   if (user.username.toLowerCase() === BOT_USERNAME.toLowerCase()) { 
     if (message.startsWith('!red') || message.startsWith('saltyt1Red') || message.startsWith('!blue') || message.startsWith('saltyt1Red')) {
-      alreadyBet = true;
+      (async () => {
+        alreadyBet = true;
+        await delay(180000);
+        alreadyBet = false;
+      })();
     }
   }
-  
+
   // Listen for bets starting and then bet after delay
   if (message.startsWith('!red') || message.startsWith('saltyt1Red') || message.startsWith('!blue') || message.startsWith('saltyt1Red')) {
-    if (betOpened === false) {
-      var betCheck = parseInt(message.split(' ')[1]); // check if a bet vs an emote
-      if (betCheck > 1) {
-        betOpened = true;
+    if (betOpened === true) {
+      (async () => {
+        await delay.range(149000, 155000); // Bet random timing for more natural looking bets
+          
+        var betInt = math.round(math.random(5, 15)); // choose random number for bet (will multiply x100)
 
-        (async () => {
-          await delay.range(154000, 156000); // Bet random timing for more natural looking bets
-            
-          var betInt = math.round(math.random(5, 15)); // choose random number for bet
+        if (betInt > 1) {
+          var betAmount = betInt * 100; // Multiply * 100 for more natural looking bet
+        } else {
+          var betAmount = 250; // Fallback bet
+        }
 
-          if (betInt > 1) {
-            var betAmount = betInt * 100; // Multiply * 100 for more natural looking bet
-          } else {
-            var betAmount = 250; // Fallback bet
-          }
+        if (red > blue) { // Set whether we bet on underdog or overdog
+          var betColor = 'blue';
+        } else {
+          var betColor = 'red';
+        }
 
-          if (red > blue) {
-            var betColor = 'blue';
-          } else {
-            var betColor = 'red';
-          }
-
-          if (betOpened === true && alreadyBet === false) {
-            client.say(channel, `!${betColor} ${betAmount}`);
-          }          
-        })();
-
-        (async () => { // reset and close bets
-          await delay(180000);
-          red = 0;
-          blue = 0;
-          alreadyBet = false;
-          betOpened = false;
-        })();
-      }
+        if (betOpened === true && alreadyBet === false) {
+          client.say(channel, `!${betColor} ${betAmount}`);
+        }
+      })();
     }
   }
-
-
-  // Listen for bets
-  if (message.startsWith('!red') || message.startsWith('saltyt1Red')) { // red bettors
-    var betsRed = parseInt(message.split(' ')[1]);
-    if (betsRed > 1) {
-      red = red + betsRed;
-      tempRed = betsRed;
-      tempRedBettor = user.username.toLowerCase();
-    }
-  }
-
-  if (message.startsWith('!blue') || message.startsWith('saltyt1Blue')) { // blue bettors
-    var betsBlue = parseInt(message.split(' ')[1]);
-    if (betsBlue > 1) {
-      blue = blue + betsBlue;
-      tempBlue = betsBlue;
-      tempBlueBettor = user.username.toLowerCase();
-    }
-  }
-  // END Listen for bets
-
-
-  if (user.username === userListener) { // Only listen to messages from this user
-
-    // Subtract invalid bets
-    //TODO: make sure it doesn't subtract twice if bettor does both colors before someone else
-    if (message.includes('You already have a bet') || message.includes('You do not have enough') ) {
-      var bettor = message.split(' ')[0].replace(/@/g,'').toLowerCase(); // Get @username
-      if (bettor === tempRedBettor) { // Compare @username with earlier tempbettor username
-        red = red - tempRed; //subtract
-      }
-      if (bettor === tempBlueBettor) {
-        blue = blue - tempBlue;
-      }
-    }
-
-    // Reset at end of betting round -or- if bets haven't started (in case of game crashes or early surrenders)
-    if (message.includes('Betting has ended') || message.includes('Betting has not opened')) {
-      red = 0;
-      blue = 0;
-      betOpened = false;
-      alreadyBet = false;
-    }
-    
-  } // END UserListener
-  
 }
 
 
