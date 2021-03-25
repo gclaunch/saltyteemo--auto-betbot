@@ -24,6 +24,7 @@ const client = new tmi.client(opts);
 
 // Register our event handlers (defined below)
 client.on('message', onMessageHandler);
+client.on('message', onFarmingHandler);
 client.on('connected', onConnectedHandler);
 
 
@@ -143,7 +144,11 @@ function onMessageHandler (channel, user, message, self) {
     
   } // END UserListener
   
-  // Auto Farming
+}
+
+
+// Auto Farming - Checks every time a message comes in
+function onFarmingHandler (channel) {
   let timeNow = math.floor(Date.now()/1000); // timestamp converted to seconds
 
   fs.readFile(timestampFile, 'utf8', function (err,timestamp) {
@@ -161,8 +166,9 @@ function onMessageHandler (channel, user, message, self) {
         })();
       });
     }
-  }); // End Farming
+  });
 }
+
 
 // Called every time the bot connects to Twitch chat
 function onConnectedHandler (addr, port) {
