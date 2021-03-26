@@ -47,7 +47,8 @@ function onMessageHandler (channel, user, message, self) {
     if (message.startsWith('!red') || message.startsWith('saltyt1Red') || message.startsWith('!blue') || message.startsWith('saltyt1Red')) {
       (async () => {
         alreadyBet = true;
-        await delay(180000);
+        await delay(230000);
+        alreadyBet = false;
         reset.resetHandler();
       })();
     }
