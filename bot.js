@@ -89,17 +89,13 @@ function onFarmingHandler (channel) {
 
   fs.readFile(timestampFile, 'utf8', function (err,timestamp) {
     if (err) return console.log(err);
-    let timeOld = math.chain(timestamp).add(18000).done(); // Set to wait 18000 seconds (5 hours)
+    let timeOld = math.chain(timestamp).add(math.round(math.random(7200, 18000))).done(); // Farm randomly between 2 - 5 hours - for natural looking farming
 
     if (timeOld < timeNow) {
       fs.writeFile(timestampFile, timeNow.toString(), function (err) {
         if (err) return console.log(err);
 
-        (async () => {
-          await delay.range(5000, 60000); // Set random times for more natural looking farming
-          
-          client.say(channel, `!farm`);
-        })();
+        client.say(channel, `!farm`);
       });
     }
   });
