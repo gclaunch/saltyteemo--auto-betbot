@@ -89,10 +89,10 @@ function onFarmingHandler (channel) {
 
   fs.readFile(timestampFile, 'utf8', function (err,timestamp) {
     if (err) return console.log(err);
-    let timeOld = math.chain(timestamp).add(math.round(math.random(17000, 18000))).done(); // Farm randomly after 5 hours - for natural looking farming
 
-    if (timeOld < timeNow) {
-      fs.writeFile(timestampFile, timeNow.toString(), function (err) {
+    if (timestamp < timeNow) {
+      let timeStore = math.chain(timeNow).add(math.round(math.random(7200, 18000))).done(); // Randomize between 2-5 hours for natural looking farming
+      fs.writeFile(timestampFile, timeStore.toString(), function (err) {
         if (err) return console.log(err);
 
         client.say(channel, `!farm`);
