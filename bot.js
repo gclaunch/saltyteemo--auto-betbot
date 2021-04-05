@@ -94,9 +94,11 @@ function onFarmingHandler (channel) {
       let timeStore = math.chain(timeNow).add(math.round(math.random(7200, 18000))).done(); // Randomize between 2-5 hours for natural looking farming
       fs.writeFile(timestampFile, timeStore.toString(), function (err) {
         if (err) return console.log(err);
-
-        client.say(channel, `!farm`);
       });
+      (async () => {
+        await delay.range(15000, 120000);
+        client.say(channel, `!farm`);
+      })();
     }
   });
 }
