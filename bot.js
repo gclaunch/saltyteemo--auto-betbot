@@ -2,8 +2,8 @@ const delay = require('delay');
 const tmi = require('tmi.js');
 const fs = require('fs');
 const math = require('mathjs');
-const reset = require("../lib/resetHandler.js");
-const { onBetopenedHandler } = require("../lib/onBetopenedHandler");
+const reset = require("./lib/resetHandler.js");
+const { onBetopenedHandler } = require("./lib/onBetopenedHandler");
 
 // Define configuration options
 var BOT_USERNAME = '';
@@ -49,7 +49,6 @@ function onMessageHandler (channel, user, message, self) {
         alreadyBet = true;
         await delay(230000);
         alreadyBet = false;
-        reset.resetHandler();
       })();
     }
   }
