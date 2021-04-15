@@ -1,22 +1,22 @@
 {
-  "name": "twitch-chatbot",
-  "version": "0.5.3",
-  "description": "A simple app chatbot.",
+  "name": "saltyteemo--auto-betbot",
+  "version": "1.2.0",
+  "description": "Automated Betting bot for Twitch.tv/SaltyTeemo",
   "main": "bot.js",
   "scripts": {
     "start": "node bot.js"
   },
   "dependencies": {
-    "delay": "^4.4.0",
+    "delay": "^4.4.1",
     "express": "^4.17.1",
     "mathjs": "^8.1.1",
-    "tmi.js": "^1.7.1"
+    "tmi.js": "^1.8.2"
   },
   "engines": {
     "node": "8.x"
   },
   "repository": {
-    "url": "https://github.com/gclaunch/married2gaming--betbot.git"
+    "url": "https://github.com/gclaunch/saltyteemo--auto-betbot.git"
   },
   "license": "MIT",
   "keywords": [
