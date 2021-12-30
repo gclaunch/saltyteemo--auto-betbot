@@ -9,7 +9,7 @@ Twitch.tv/SaltyTeemo spectates League of Legends streams and lets viewers bet on
 
 Twitch offers an Internet Relay Chat (IRC) interface for chat functionality. Chatbots allow you to programmatically interact with a Twitch chat feed using IRC standards; the bot connects to the Twitch IRC network as a client to perform these actions.This guide presents an easy bot example to get you started.
 
-
+run `npm install` to install all packages.
 
 ### Running the Bot
 
